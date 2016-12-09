@@ -1,34 +1,123 @@
 <link rel="import" href="../polymer/polymer.html">
+<script src="../lodash/dist/lodash.core.js"></script>
 
 <!--
 `poly-grid`
 -
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="poly-grid">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]</h2>
-  </template>
+    <template>
+        <style is="custom-style">
+            :host {
+                display: block;
+            }
+            :host #table {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                display: table;
+            }
+            :host .bordered {
+                border: 1px solid #ccc;
+                padding: 4px;
+            }
+            :host .row {
+                display: table-row;
+                padding: 4px;
+            }
+            :host .cell {
+                display: table-cell;
+                padding: 4px;
+            }
+        </style>
 
-  <script>
-    Polymer({
+        <div id="table"></div>
+    </template>
 
-      is: 'poly-grid',
+    <script>
+        Polymer({
 
-      properties: {
-        prop1: {
-          type: String,
-          value: 'poly-grid',
-        },
-      },
+            is: 'poly-grid',
 
-    });
-  </script>
+            properties: {
+                params: {
+                    type: Object,
+                    notify: true,
+                    value: {
+                        items: [
+                            {id: 1, name: "Тестовое значение 1"},
+                            {id: 2, name: "Тестовое значение 2"},
+                            {id: 3, name: "Тестовое значение 3"},
+                            {id: 4, name: "Тестовое значение 4"}
+                        ],
+                        fields: [
+                            { name: "Номер"},
+                            { name: "Наименование"}
+                        ]
+                    },
+                    observer: "observerParams"
+                }
+            },
+
+            createTable: createTable,
+            observerParams: observerParams
+
+        });
+
+        function observerParams(newValue){
+            if(!newValue) return;
+
+            this.createTable();
+        }
+
+        function createTable(){
+            var _this = this;
+            var table = _this.$.table;
+            var thead = createHeader(_this.params);
+            var tbody = createBody(_this.params);
+
+            Polymer.dom(table).appendChild(thead);
+            Polymer.dom(table).appendChild(tbody);
+        }
+
+        function createHeader(params) {
+            var fields = params.fields;
+            var thead = _generateDiv({ classes: "row" });
+            _.each(fields, function(item){
+                var cell = _generateDiv({ classes: "cell" });
+                cell.innerText = item.name;
+                thead.appendChild(cell);
+            });
+
+            return thead;
+        }
+
+        function createBody(params) {
+            var fields = params.items;
+            var tbody = _generateDiv();
+
+            var thead = _generateDiv({ classes: "row" });
+            _.each(fields, function(item){
+                var cell = _generateDiv({ classes: "cell" });
+                cell.innerText = item.name;
+                thead.appendChild(cell);
+            });
+
+            return tbody;
+        }
+
+        function _generateDiv(option){
+            var div = document.createElement('div');
+            div.classList.add("bordered");
+
+            if(!option) return div;
+
+            div.classList.add(option.classes);
+
+            return div;
+        }
+    </script>
 </dom-module>

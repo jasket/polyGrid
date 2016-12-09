@@ -3,7 +3,9 @@
   "description": "-",
   "main": "poly-grid.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^1.4.0",
+    "lodash": "^4.17.2",
+    "jquery": "^3.1.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
