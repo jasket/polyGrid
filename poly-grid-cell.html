@@ -1,0 +1,23 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="poly-grid-cell">
+    <template>
+        <style is="custom-style">
+            :host {
+                display: table-cell;
+            }
+        </style>
+
+        <content></content>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'poly-grid-cell',
+
+            properties: {
+                item: Object
+            }
+        });
+    </script>
+</dom-module>

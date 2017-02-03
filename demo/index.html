@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <title>poly-grid demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
@@ -10,20 +10,34 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../poly-grid.html">
+    <link rel="import" href="../poly-grid-header.html">
+    <link rel="import" href="../poly-grid-row.html">
+    <link rel="import" href="../poly-grid-cell.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
-  </head>
-  <body>
+</head>
+<body>
 
-    <div class="vertical-section-container centered">
-      <h3>Basic poly-grid Demo</h3>
-      <demo-snippet>
+<div class="vertical-section-container centered">
+    <h3>Basic poly-grid Demo</h3>
+    <demo-snippet>
         <template>
-          <poly-grid></poly-grid>
+            <poly-grid>
+                <template>
+                    <poly-grid-row>
+                        <poly-grid-cell>
+                            [[item.id]]
+                        </poly-grid-cell>
+                        <poly-grid-cell>
+                            [[item.name]]
+                        </poly-grid-cell>
+                    </poly-grid-row>
+                </template>
+            </poly-grid>
         </template>
-      </demo-snippet>
-    </div>
+    </demo-snippet>
+</div>
 
-  </body>
+</body>
 </html>

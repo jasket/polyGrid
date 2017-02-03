@@ -1,0 +1,47 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="poly-grid-header">
+    <template>
+        <style is="custom-style">
+            :host {
+                width: 100%;
+                display: table-row-group;
+            }
+            :host .row{
+                width: 100%;
+                display: table-row;
+            }
+            :host .cell{
+                display: table-cell;
+            }
+        </style>
+
+        <div class="row">
+            <template is="dom-repeat" items="[[params.headers]]">
+                <div class="cell">
+                    {{item.title}}
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'poly-grid-header',
+
+            properties: {
+                params: {
+                    type: Object,
+                    notify: true,
+                    value: {}
+                }
+            },
+
+            ready: ready
+        });
+
+        function ready(){
+            console.log(this.params);
+        }
+    </script>
+</dom-module>

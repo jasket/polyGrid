@@ -1,123 +1,72 @@
 <link rel="import" href="../polymer/polymer.html">
+
 <script src="../lodash/dist/lodash.core.js"></script>
-
-<!--
-`poly-grid`
--
-
-@demo demo/index.html
--->
 
 <dom-module id="poly-grid">
     <template>
         <style is="custom-style">
             :host {
-                display: block;
-            }
-            :host #table {
                 width: 100%;
-                margin: 0;
-                padding: 0;
                 display: table;
             }
-            :host .bordered {
-                border: 1px solid #ccc;
-                padding: 4px;
-            }
-            :host .row {
-                display: table-row;
-                padding: 4px;
-            }
-            :host .cell {
-                display: table-cell;
-                padding: 4px;
+            :host .poly-grid-body{
+                display: table-row-group;
             }
         </style>
 
-        <div id="table"></div>
+        <poly-grid-header params="[[params]]"></poly-grid-header>
+
+        <div class="poly-grid-body">
+            <div id="tmpl"><content></content></div>
+            <template id="repeater" is="dom-repeat" items="[[items]]"></template>
+        </div>
     </template>
 
     <script>
         Polymer({
-
             is: 'poly-grid',
 
             properties: {
+                items: {
+                    type: Array,
+                    notify: true,
+                    value: [
+                        { id: 11, name: 'Имя1' },
+                        { id: 12, name: 'Имя2' },
+                        { id: 13, name: 'Имя3' }
+                    ]
+                },
                 params: {
                     type: Object,
                     notify: true,
                     value: {
-                        items: [
-                            {id: 1, name: "Тестовое значение 1"},
-                            {id: 2, name: "Тестовое значение 2"},
-                            {id: 3, name: "Тестовое значение 3"},
-                            {id: 4, name: "Тестовое значение 4"}
-                        ],
-                        fields: [
-                            { name: "Номер"},
-                            { name: "Наименование"}
+                        headers: [
+                            { title: "Номер" },
+                            { title: "Имя" }
                         ]
-                    },
-                    observer: "observerParams"
+                    }
                 }
             },
 
-            createTable: createTable,
-            observerParams: observerParams
-
+            ready: ready,
+            obsCollection: obsCollection,
+            templatizeCollection: templatizeCollection
         });
 
-        function observerParams(newValue){
-            if(!newValue) return;
-
-            this.createTable();
+        function ready(){
+            this.templatizeCollection();
         }
 
-        function createTable(){
-            var _this = this;
-            var table = _this.$.table;
-            var thead = createHeader(_this.params);
-            var tbody = createBody(_this.params);
-
-            Polymer.dom(table).appendChild(thead);
-            Polymer.dom(table).appendChild(tbody);
+        function obsCollection(items) {
+            console.log('render', items);
+            this.templatizeCollection();
+            this.$.repeater.render();
         }
 
-        function createHeader(params) {
-            var fields = params.fields;
-            var thead = _generateDiv({ classes: "row" });
-            _.each(fields, function(item){
-                var cell = _generateDiv({ classes: "cell" });
-                cell.innerText = item.name;
-                thead.appendChild(cell);
-            });
-
-            return thead;
-        }
-
-        function createBody(params) {
-            var fields = params.items;
-            var tbody = _generateDiv();
-
-            var thead = _generateDiv({ classes: "row" });
-            _.each(fields, function(item){
-                var cell = _generateDiv({ classes: "cell" });
-                cell.innerText = item.name;
-                thead.appendChild(cell);
-            });
-
-            return tbody;
-        }
-
-        function _generateDiv(option){
-            var div = document.createElement('div');
-            div.classList.add("bordered");
-
-            if(!option) return div;
-
-            div.classList.add(option.classes);
-
-            return div;
+        function templatizeCollection(){
+            var template = this.querySelector('#tmpl template');
+            var repeater = this.$.repeater;
+            repeater.templatize(template);
         }
     </script>
 </dom-module>
